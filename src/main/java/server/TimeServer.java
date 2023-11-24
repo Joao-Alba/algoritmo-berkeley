@@ -6,8 +6,9 @@ import java.time.LocalTime;
 
 import common.AppConstants;
 
-public class TimeServer extends UnicastRemoteObject implements Server {
+public class TimeServer extends UnicastRemoteObject implements Server{
 
+	private static final long serialVersionUID = 1L;
 	private LocalTime horario;
 
 	public TimeServer(LocalTime horario) throws RemoteException {
@@ -24,7 +25,7 @@ public class TimeServer extends UnicastRemoteObject implements Server {
 		Long currentTime = this.horario.toNanoOfDay();
 		currentTime += nanoDifference;
 		LocalTime newTime = LocalTime.ofNanoOfDay(currentTime);
-		System.out.println("Horï¿½rio atualizado: " + AppConstants.formatter.format(newTime));
+		System.out.println("Horário atualizado: " + AppConstants.formatter.format(newTime));
 		this.horario = newTime;
 	}
 

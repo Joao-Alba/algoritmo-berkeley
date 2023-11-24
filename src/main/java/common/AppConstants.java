@@ -1,6 +1,7 @@
 package common;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
 
 public interface AppConstants {
 
@@ -14,4 +15,5 @@ public interface AppConstants {
 	int SERVER_PORT_3 = 1502;
 
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+	Random rand = new Random();
 }

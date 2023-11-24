@@ -13,7 +13,7 @@ import common.AppConstants;
 import server.Server;
 import server.TimeServer;
 
-// Alunos: Ana Caroline, JoÃ£o Alba, Nicole
+// Alunos: Ana Caroline, João Alba, Nicole
 
 public class MainServer {
 
@@ -28,14 +28,14 @@ public class MainServer {
 
 			LocalTime localTime = LocalTime.now();
 			times.add(localTime);
-			System.out.println("HorÃ¡rio Local: " + formatter.format(localTime));
+			System.out.println("Horário Local: " + formatter.format(localTime));
 
 			for(ServerInfo serverInfo : serverList){
 				Registry registry = LocateRegistry.getRegistry(serverInfo.serverName, serverInfo.serverPort);
 				Server server = (Server) registry.lookup(TimeServer.class.getSimpleName());
 				serverInfo.setServer(server);
-				System.out.printf("ConexÃ£o com Servidor %d estabelecida com sucesso.\n", serverInfo.serverNumber);
-				//System.out.printf("HorÃ¡rio Servidor %d: %s", i, formatter.format(horarioServidor));
+				System.out.printf("Conexão com servidor %d estabelecida com sucesso.\n", serverInfo.serverNumber);
+				System.out.printf("Horário do servidor %d : %s.\n", serverInfo.serverNumber, formatter.format(serverInfo.server.getTime()));
 			}
 
 			Long timeSum = localTime.toNanoOfDay();
@@ -45,7 +45,7 @@ public class MainServer {
 
 			Long timeAverage = timeSum / (serverList.size() + 1);
 
-			//fix horario local
+			localTime = LocalTime.ofNanoOfDay(timeAverage);
 
 			for(ServerInfo serverInfo : serverList){
 				Long serverTime = serverInfo.getServer().getTime().toNanoOfDay();
@@ -53,12 +53,11 @@ public class MainServer {
 				serverInfo.getServer().setTime(difference);
 			}
 
-			System.out.println("Horï¿½rios atualizados");
+			System.out.println("Horários atualizados");
 
-			// Verificar horario em todas as instï¿½ncias
-			System.out.println("Horario Local: " + formatter.format(localTime));
+			System.out.println("Horário Local: " + formatter.format(localTime));
 			for(ServerInfo serverInfo : serverList){
-				System.out.printf("Horario Servidor %d: %s\n", serverInfo.serverNumber, formatter.format(serverInfo.getServer().getTime()));
+				System.out.printf("Horário servidor %d: %s\n", serverInfo.serverNumber, formatter.format(serverInfo.getServer().getTime()));
 			}
 		} catch (Exception ex) {
 			System.out.println(ex);

@@ -1,6 +1,6 @@
 package server;
 
-import static common.AppConstants.formatter;
+import static common.AppConstants.rand;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -12,10 +12,11 @@ public class ServerTwo {
 
 	public static void main(String[] args) {
 		try {
-			// Servidor 2
-			Server hs2 = new TimeServer(LocalTime.parse("07:10:00", formatter));
-			Registry registry2 = LocateRegistry.createRegistry(AppConstants.SERVER_PORT_2);
-			registry2.rebind(TimeServer.class.getSimpleName(), hs2);
+			Long randomNano = LocalTime.now().toNanoOfDay();
+			randomNano += rand.nextLong(-5000L, 5000L);
+			TimeServer server = new TimeServer(LocalTime.ofNanoOfDay(randomNano));
+			Registry registry = LocateRegistry.createRegistry(AppConstants.SERVER_PORT_2);
+			registry.rebind(TimeServer.class.getSimpleName(), server);
 			System.out.println(String.format("Servidor 2 iniciado na porta %s", AppConstants.SERVER_PORT_2));
 		} catch (Exception ex) {
 			System.out.println(ex);
